@@ -42,7 +42,7 @@
 #     \version   1.0
 # */
 # //==============================================================================
-from surgical_robotics_challenge.kinematics.psmKinematics import *
+from surgical_robotics_challenge.kinematics.psmIK import *
 from surgical_robotics_challenge.simulation_manager import SimulationManager
 from surgical_robotics_challenge.psm_arm import PSM
 import time
@@ -78,10 +78,9 @@ class PSMController:
         if self.arm.target_FK is not None:
             ik_solution = self.arm.get_ik_solution()
             ik_solution = np.append(ik_solution, 0)
-            T_t_b = convert_mat_to_frame(self.arm.compute_FK(ik_solution))
+            T_t_b = convert_mat_to_frame(compute_FK(ik_solution))
             T_t_w = self.arm.get_T_b_w() * T_t_b
             self.arm.target_FK.set_pose(T_t_w)
-
     def run(self):
             self.update_arm_pose()
             self.update_visual_markers()
@@ -172,7 +171,12 @@ if __name__ == "__main__":
         print('Exiting')
 
     else:
+        timer = 200
         while not rospy.is_shutdown():
             for cont in controllers:
                 cont.run()
+                if (timer < 0):
+                    print("Psm Position = ",psm.measured_cp())
+                    timer = 200
+                timer -= 1
             time.sleep(0.005)

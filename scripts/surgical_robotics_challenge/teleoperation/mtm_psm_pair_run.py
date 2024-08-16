@@ -107,7 +107,7 @@ class ControllerInterface:
         else:
             if self.leader_1.is_active():
                 self.leader_1.servo_cp(self.leader_1.pre_coag_pose_msg)
-        twist = self.leader_1.measured_cv() * coordinate_frames.TeleopScale.scale_factor
+        twist = self.leader_1.measured_cv() * 0.0035
         self.cmd1_xyz = self.psm_1.T_t_b_home.p
         if not self.leader_1.clutch_button_pressed:
             delta_t = self._T1_c_b.M * twist.vel
@@ -127,7 +127,7 @@ class ControllerInterface:
         else:
             if self.leader_2.is_active():
                 self.leader_2.servo_cp(self.leader_2.pre_coag_pose_msg)
-        twist = self.leader_2.measured_cv() * coordinate_frames.TeleopScale.scale_factor
+        twist = self.leader_2.measured_cv() * 0.0035
         self.cmd2_xyz = self.psm_2.T_t_b_home.p
         if not self.leader_2.clutch_button_pressed:
             delta_t = self._T2_c_b.M * twist.vel
@@ -179,7 +179,6 @@ class ControllerInterface:
 if __name__ == "__main__":
     parser = ArgumentParser()
     parser.add_argument('-c', action='store', dest='client_name', help='Client Name', default='mtm_sim_teleop')
-    parser.add_argument('-t', action='store', dest='tool_id', help='Surgical Instrument Serial Number', default='400006')
     parser.add_argument('--one', action='store', dest='run_psm_one', help='Control PSM1', default=True)
     parser.add_argument('--two', action='store', dest='run_psm_two', help='Control PSM2', default=True)
     parser.add_argument('--three', action='store', dest='run_psm_three', help='Control PSM3', default=False)
@@ -203,8 +202,6 @@ if __name__ == "__main__":
         parsed_args.run_psm_three = False
 
     simulation_manager = SimulationManager(parsed_args.client_name)
-
-    # tool_id = int(parsed_args.tool_id)
 
     cam = ECM(simulation_manager, 'CameraFrame')
     time.sleep(0.5)

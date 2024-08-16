@@ -98,6 +98,7 @@ class JointErrorsModel:
         return True
 
     def add_to_joints(self, q, joint_mask):
+        # print(f"errors = {self._joint_errors}")
         if self._size_check(q, joint_mask):
             if type(q) == tuple:
                 q = list(q)
@@ -107,6 +108,7 @@ class JointErrorsModel:
         return q
 
     def remove_from_joints(self, q, joint_mask):
+        # print(f"errors = {self._joint_errors}")
         if self._size_check(q, joint_mask):
             if type(q) == tuple:
                 q = list(q)

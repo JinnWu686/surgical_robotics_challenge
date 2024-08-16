@@ -6,7 +6,6 @@ from surgical_robotics_challenge.scene import Scene
 import rospy
 from sensor_msgs.msg import Image
 from surgical_robotics_challenge.task_completion_report import TaskCompletionReport, PoseStamped
-from surgical_robotics_challenge.kinematics.psmKinematics import ToolType
 
 from PyKDL import Frame, Rotation, Vector
 import numpy as np

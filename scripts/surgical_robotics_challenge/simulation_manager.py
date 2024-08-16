@@ -18,9 +18,6 @@ class SimulationObject:
 
     def get_pose(self):
         return units_conversion.get_pose(self._object)
-    
-    def get_ros_name(self)->str:
-        return self._object._name
 
     def set_pos(self, pos):
         units_conversion.set_pos(self._object, pos)
@@ -63,12 +60,8 @@ class SimulationManager:
         self._client = Client(name)
         self._client.connect()
 
-    def get_obj_handle(self, name, required: bool= False)->SimulationObject:
+    def get_obj_handle(self, name):
         ambf_object = self._client.get_obj_handle(name)
-        
-        if required and ambf_object is None:
-            raise RuntimeError(f"SimulationObject {name} is required not found in the simulation")
-
         if ambf_object:
             return SimulationObject(ambf_object)
         else:
